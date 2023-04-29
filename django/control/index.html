@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    </head>
+    <body>
+        <h3><img src="video_feed" width="90%"></h3>
+        <hr>
+            <form id="move_form">
+                {% csrf_token %}
+                <input name="1" type="submit" value="left">
+                <input name="2" type="submit" value="right">
+                <input name="3" type="submit" value="up">
+                <input name="4" type="submit" value="down">
+            </form>
+        <hr>
+        <script>
+            $(document).ready(function() {
+                $("#move_form").click(function(event){
+                    event.preventDefault();
+                    $.ajax({
+                        type: 'POST',
+                        url:  "{% url 'move' %}",
+                        data: {
+                            'direction': $("input[type=submit]:focus").val(),
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        dataType: 'JSON',
+                        success: function(response) {
+                            console.log("success");
+                        },
+                        error: function(response) {
+                            console.log("error");
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

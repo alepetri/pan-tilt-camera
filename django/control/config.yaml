@@ -1,0 +1,16 @@
+gimbal:
+  max_speed: 10 # deg/s
+  pan_servo:
+    id: 15
+    invert: True
+    limits:
+      left: -40 # deg
+      right: 70 # deg
+    bias: 10
+  tilt_servo:
+    id: 14
+    invert: False # installed as down+ up-
+    limits:
+      down: -45 # deg
+      up: 70 # deg
+    bias: 0
