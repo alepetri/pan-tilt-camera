@@ -9,7 +9,7 @@ def index(request):
     return render(request, "index.html")
 
 def move(request):
-    if request.POST['direction']:
+    if 'direction' in request.POST:
         if request.POST['direction'] == 'up':
             gimbal.move(0,5)
         if request.POST['direction'] == 'down':
@@ -18,6 +18,8 @@ def move(request):
             gimbal.move(-5,0)
         if request.POST['direction'] == 'right':
             gimbal.move(5,0)
+    else:
+        print(request.POST)
     return JsonResponse({'t':True})
 
 def gen(cam):
