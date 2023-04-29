@@ -8,21 +8,33 @@
         <hr>
             <form id="move_form">
                 {% csrf_token %}
-                <input name="1" type="submit" value="left">
-                <input name="2" type="submit" value="right">
-                <input name="3" type="submit" value="up">
-                <input name="4" type="submit" value="down">
+                <input type="submit" value="left">
+                <input type="submit" value="right">
+                <input type="submit" value="up">
+                <input type="submit" value="down">
             </form>
         <hr>
         <script>
             $(document).ready(function() {
-                $("#move_form").click(function(event){
-                    event.preventDefault();
+                // submit listener: https://stackoverflow.com/a/2299693/11780861
+                $("form").each(function ()
+                {
+                    var form_ref = $(this);
+
+                    $("input:submit", form_ref).bind("click keypress", function ()
+                    {
+                        // store the id of the submit-input on it's enclosing form
+                        form_ref.data("callerid", this.value);
+                    });
+                });
+                $("#move_form").submit(function(event){
+                    // event.preventDefault();
+                    console.log($(this).data("callerid"));
                     $.ajax({
                         type: 'POST',
                         url:  "{% url 'move' %}",
                         data: {
-                            'direction': $("input[type=submit]:focus").val(),
+                            'direction': $(this).data("callerid"),
                             'csrfmiddlewaretoken': '{{ csrf_token }}'
                         },
                         dataType: 'JSON',
@@ -33,6 +45,7 @@
                             console.log("error");
                         }
                     });
+                    return false;
                 });
             });
         </script>
