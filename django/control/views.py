@@ -18,6 +18,10 @@ def move(request):
             gimbal.move(-5,0)
         if request.POST['direction'] == 'right':
             gimbal.move(5,0)
+        if request.POST['direction'] == 'zoom_in':
+            Camera().zoom(Camera.ZoomState.ZOOM_IN)
+        if request.POST['direction'] == 'zoom_out':
+            Camera().zoom(Camera.ZoomState.ZOOM_OUT)
     else:
         print(request.POST)
     return JsonResponse({'t':True})
