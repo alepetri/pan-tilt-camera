@@ -10,7 +10,6 @@ def index(request):
 
 def move(request):
     if 'direction' in request.POST:
-        print(request.POST['direction'])
         if request.POST['direction'] == 'up':
             gimbal.move_relative((0,5))
         if request.POST['direction'] == 'down':

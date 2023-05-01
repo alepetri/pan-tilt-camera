@@ -54,7 +54,7 @@ class Gimbal:
     pan: Optional[Servo] = None
     tilt: Optional[Servo] = None
 
-    def initialize(self) -> None:
+    def __init__(self) -> None:
         if Gimbal.thread is None:
             # TODO: fix pathing
             with open('control/config.yaml', 'r') as f:
@@ -85,13 +85,11 @@ class Gimbal:
 
     def move(self, target_pos: Tuple[int, int]) -> None:
         '''target_dt: (pan_deg_dt, tilt_deg_dt)'''
-        self.initialize()
         Gimbal.target_pos = tuple(np.clip(t, -90, 90) for t in target_pos)
         print(Gimbal.target_pos)
     
     def move_relative(self, target_dt: Tuple[int, int]) -> None:
         '''target_dt: (pan_deg_dt, tilt_deg_dt)'''
-        print("move_relative")
         self.move((
             target_dt[0] + Gimbal.target_pos[0],
             target_dt[1] + Gimbal.target_pos[1],
@@ -99,7 +97,7 @@ class Gimbal:
 
     @classmethod
     def _thread(cls):
-        print("\n!!!!!Starting Gimbal Thread!!!!!\n")
+        print("\nStarting Gimbal Thread!\n")
         dt_s = Gimbal.max_speed * (Gimbal.update_period_ns / 1e9)
         while True:
             # For now, always move at max speed
