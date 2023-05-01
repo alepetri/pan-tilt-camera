@@ -57,8 +57,8 @@ class Camera:
             time.sleep(2)
 
             # https://github.com/raspberrypi/picamera2/blob/main/examples/zoom.py
-            size_px = camera.capture_metadata()['ScalerCrop'][2:4] # type: ignore
-            full_size_px = camera.camera_properties['PixelArraySize']
+            size_px = list(camera.capture_metadata()['ScalerCrop'][2:4]) # type: ignore
+            full_size_px = list(camera.camera_properties['PixelArraySize'])
 
             data = io.BytesIO()
             while time.time() - cls.last_access < 10:
@@ -71,7 +71,7 @@ class Camera:
                 
                 if cls.zoom_state != cls.ZoomState.NONE:
                     if any(s > r for r, s in zip(full_size_px, size_px)):
-                        size_px = full_size_px.deepcopy()
+                        size_px = full_size_px.copy()
                     offset_px = [(r - s) // 2 for r, s in zip(full_size_px, size_px)]
                     camera.set_controls({'ScalerCrop': offset_px + size_px})
                     cls.zoom_state = cls.ZoomState.NONE
