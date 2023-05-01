@@ -10,14 +10,15 @@ def index(request):
 
 def move(request):
     if 'direction' in request.POST:
+        print(request.POST['direction'])
         if request.POST['direction'] == 'up':
-            gimbal.move(0,5)
+            gimbal.move_relative((0,5))
         if request.POST['direction'] == 'down':
-            gimbal.move(0,-5)
+            gimbal.move_relative((0,-5))
         if request.POST['direction'] == 'left':
-            gimbal.move(-5,0)
+            gimbal.move_relative((-5,0))
         if request.POST['direction'] == 'right':
-            gimbal.move(5,0)
+            gimbal.move_relative((5,0))
         if request.POST['direction'] == 'zoom_in':
             Camera().zoom(Camera.ZoomState.ZOOM_IN)
         if request.POST['direction'] == 'zoom_out':
